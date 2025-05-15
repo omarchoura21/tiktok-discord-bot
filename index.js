@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('./keepAlive');
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const cron = require('node-cron');
 
