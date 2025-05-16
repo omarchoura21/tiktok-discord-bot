@@ -34,18 +34,19 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('0 9 * * *', () => {
-    const today = new Date().toDateString();
+cron.schedule('0 7 * * *', () => {
+  const today = new Date().toDateString();
 
-    if (sentDates.has(today)) {
-      console.log('🕒 TikTok already sent today — skipping.');
-      return;
-    }
+  if (sentDates.has(today)) {
+    console.log('🕒 TikTok already sent today — skipping.');
+    return;
+  }
 
-    console.log('📤 Sending daily TikTok link...');
-    sendTikTokToFriends();
-    sentDates.add(today);
-  });
+  console.log('📤 Sending daily TikTok link...');
+  sendTikTokToFriends();
+  sentDates.add(today);
+});
+
 });
 
 // Load sent TikToks from file
@@ -120,3 +121,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🌐 Server running on port ${PORT}`);
 });
+
+
