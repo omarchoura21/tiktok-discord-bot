@@ -30,8 +30,15 @@ const SEARCH_QUERIES = [
 const SENT_LOG_FILE = './sent_tiktoks.json';
 
 const FRIEND_IDS = [
+    '479422376703033356',  //yousef
 
-  '295190404842782721',// you
+  '686652284696002560', // abdallah
+  '203048947705446400', // kossay
+  '837464580887281696', // ali
+  '436559024788340746', // moez
+  '543488162219950080', // ania
+
+  '295190404842782721'// you
 
 ];
 
