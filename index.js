@@ -12,7 +12,12 @@ const client = new Client({
 });
 
 const TOKEN = process.env.DISCORD_TOKEN;
-const TIKTOK_URL = 'https://www.tiktok.com/@du_duruu/video/7362722874018286853';
+const TIKTOK_URLS = [
+  'https://www.tiktok.com/@du_duruu/video/7362722874018286853',
+  'https://www.tiktok.com/@futty_loverr/video/7441860931979611422',
+  // add more if needed
+];
+
 
 const FRIEND_IDS = [
   '686652284696002560', // abdallah
