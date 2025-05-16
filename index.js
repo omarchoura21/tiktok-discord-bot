@@ -63,7 +63,7 @@ async function fetchSearchResults() {
       params: { keywords: SEARCH_QUERY, count: 20 }
     });
 
-    const results = response.data?.data;
+const results = response.data?.data?.videos;
     if (!Array.isArray(results)) {
       console.error('❌ TikTok API error or bad format:', response.data);
       return [];
