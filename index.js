@@ -34,7 +34,7 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('20 7 * * *', () => {
+  cron.schedule('30 7 * * *', () => {
     const today = new Date().toDateString();
 
     if (sentDates.has(today)) {
