@@ -30,7 +30,7 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('30 9 * * *', () => {
+  cron.schedule('43 9 * * *', () => {
     const today = new Date().toDateString();
 
     if (sentDates.has(today)) {
@@ -63,14 +63,19 @@ async function fetchSearchResults() {
       params: { keywords: SEARCH_QUERY, count: 20 }
     });
 
-const results = response.data?.data?.videos;
+    const results = response.data?.data?.videos;
     if (!Array.isArray(results)) {
       console.error('❌ TikTok API error or bad format:', response.data);
       return [];
     }
 
-    return results.map(item => item.url); // this is the correct working field
+    // Use .url and filter out bad links
+    const urls = results
+      .map(item => item.url)
+      .filter(url => typeof url === 'string' && url.includes('tiktok.com'));
 
+    console.log('🌐 All fetched TikToks:', urls);
+    return urls;
   } catch (err) {
     console.error('❌ Error fetching TikTok search:', err.message);
     return [];
@@ -78,28 +83,34 @@ const results = response.data?.data?.videos;
 }
 
 
+
 // Pick one new video that hasn't been sent before
 async function getUniqueTikTok() {
   const sentSet = loadSentTiktoks();
   const allResults = await fetchSearchResults();
 
+  console.log('🧾 Already sent:', [...sentSet]);
+
   const unsent = allResults.filter(url => !sentSet.has(url));
- if (unsent.length === 0 && allResults.length > 0) {
-  console.warn('⚠️ All results were already sent. Reusing one.');
-  return allResults[0]; // fallback to first
-}
 
-if (unsent.length === 0) {
-  console.warn('⚠️ No TikToks found at all.');
-  return null;
-}
+  if (unsent.length === 0 && allResults.length > 0) {
+    console.warn('⚠️ All results already sent. Reusing first TikTok:', allResults[0]);
+    return allResults[0];
+  }
 
+  if (unsent.length === 0) {
+    console.warn('⚠️ No TikToks found at all.');
+    return null;
+  }
 
   const random = unsent[Math.floor(Math.random() * unsent.length)];
   sentSet.add(random);
   saveSentTiktoks(sentSet);
+
+  console.log(`🎞️ Bonus TikTok selected: ${random}`);
   return random;
 }
+
 
 // Send messages to all friends
 async function sendTikTokToFriends() {
