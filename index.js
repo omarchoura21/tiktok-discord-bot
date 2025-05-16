@@ -30,7 +30,7 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('23 9 * * *', () => {
+  cron.schedule('30 9 * * *', () => {
     const today = new Date().toDateString();
 
     if (sentDates.has(today)) {
@@ -84,10 +84,16 @@ async function getUniqueTikTok() {
   const allResults = await fetchSearchResults();
 
   const unsent = allResults.filter(url => !sentSet.has(url));
-  if (unsent.length === 0) {
-    console.warn('⚠️ No new TikToks available.');
-    return null;
-  }
+ if (unsent.length === 0 && allResults.length > 0) {
+  console.warn('⚠️ All results were already sent. Reusing one.');
+  return allResults[0]; // fallback to first
+}
+
+if (unsent.length === 0) {
+  console.warn('⚠️ No TikToks found at all.');
+  return null;
+}
+
 
   const random = unsent[Math.floor(Math.random() * unsent.length)];
   sentSet.add(random);
