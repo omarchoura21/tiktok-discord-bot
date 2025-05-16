@@ -30,7 +30,7 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('20 9 * * *', () => {
+  cron.schedule('23 9 * * *', () => {
     const today = new Date().toDateString();
 
     if (sentDates.has(today)) {
@@ -69,7 +69,8 @@ const results = response.data?.data?.videos;
       return [];
     }
 
-    return results.map(item => item.share_url);
+    return results.map(item => item.url); // this is the correct working field
+
   } catch (err) {
     console.error('❌ Error fetching TikTok search:', err.message);
     return [];
