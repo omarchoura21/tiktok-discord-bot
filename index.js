@@ -16,7 +16,16 @@ const client = new Client({
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const MAIN_TIKTOK = 'https://www.tiktok.com/@du_duruu/video/7362722874018286853';
-const SEARCH_QUERY = 'unexpected edits zack d film';
+const SEARCH_QUERIES = [
+  'unexpected edits zack d film',
+  'unexpected edits',
+  'zack d edits',
+  'movie transitions',
+  'tiktok transitions',
+  'epic edits',
+  'film meme',
+];
+
 const SENT_LOG_FILE = './sent_tiktoks.json';
 
 const FRIEND_IDS = [
@@ -45,6 +54,11 @@ client.once('ready', () => {
 
 });
 
+function getRandomQuery() {
+  return SEARCH_QUERIES[Math.floor(Math.random() * SEARCH_QUERIES.length)];
+}
+
+
 // Load sent TikToks from file
 function loadSentTiktoks() {
   if (!fs.existsSync(SENT_LOG_FILE)) return new Set();
@@ -58,9 +72,12 @@ function saveSentTiktoks(set) {
 
 // Get trending TikToks from the specific search
 async function fetchSearchResults() {
+  const selectedQuery = getRandomQuery();
+  console.log('🔍 Using search query:', selectedQuery);
+
   try {
     const response = await axios.get('https://tikwm.com/api/feed/search', {
-      params: { keywords: SEARCH_QUERY, count: 20 }
+      params: { keywords: selectedQuery, count: 20 }
     });
 
     const results = response.data?.data?.videos;
@@ -69,7 +86,6 @@ async function fetchSearchResults() {
       return [];
     }
 
-    // Use .url and filter out bad links
     const urls = results
       .map(item => item.url)
       .filter(url => typeof url === 'string' && url.includes('tiktok.com'));
