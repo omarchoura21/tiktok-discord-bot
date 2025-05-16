@@ -34,18 +34,18 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-cron.schedule('0 7 * * *', () => {
-  const today = new Date().toDateString();
+  cron.schedule('0 7 * * *', () => {
+    const today = new Date().toDateString();
 
-  if (sentDates.has(today)) {
-    console.log('🕒 TikTok already sent today — skipping.');
-    return;
-  }
+    if (sentDates.has(today)) {
+      console.log('🕒 TikTok already sent today — skipping.');
+      return;
+    }
 
-  console.log('📤 Sending daily TikTok link...');
-  sendTikTokToFriends();
-  sentDates.add(today);
-});
+    console.log('📤 Sending daily TikTok link...');
+    sendTikTokToFriends();
+    sentDates.add(today);
+  });
 
 });
 
@@ -64,7 +64,8 @@ function saveSentTiktoks(set) {
 async function fetchSearchResults() {
   try {
     const response = await axios.get('https://tikwm.com/api/feed/search', {
-      params: { keyword: SEARCH_QUERY, count: 20 }
+      params: { keywords: SEARCH_QUERY, count: 20 }
+
     });
     const results = response.data.data || [];
     return results.map(item => item.share_url);
@@ -95,6 +96,12 @@ async function getUniqueTikTok() {
 async function sendTikTokToFriends() {
   const extraTikTok = await getUniqueTikTok();
 
+  if (!extraTikTok) {
+    console.warn('⚠️ No bonus TikTok was available today.');
+  } else {
+    console.log(`🎞️ Bonus TikTok selected: ${extraTikTok}`);
+  }
+
   for (const id of FRIEND_IDS) {
     try {
       const user = await client.users.fetch(id);
@@ -111,6 +118,7 @@ async function sendTikTokToFriends() {
     }
   }
 }
+
 
 client.login(TOKEN);
 
