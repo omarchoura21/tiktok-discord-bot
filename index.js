@@ -17,14 +17,15 @@ const client = new Client({
 const TOKEN = process.env.DISCORD_TOKEN;
 const MAIN_TIKTOK = 'https://www.tiktok.com/@du_duruu/video/7362722874018286853';
 const SEARCH_QUERIES = [
-  'unexpected edits zack d film',
-  'unexpected edits',
-  'zack d edits',
-  'movie transitions',
-  'tiktok transitions',
-  'epic edits',
-  'film meme',
+  'zack d film edits',
+  'best movie transitions',
+  'unexpected tiktok edits',
+  'smooth tiktok transitions',
+  'film edits 2024',
+  'movie edit meme',
+  'cool movie edits'
 ];
+
 
 const SENT_LOG_FILE = './sent_tiktoks.json';
 
@@ -39,7 +40,7 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('58 9 * * *', () => {
+  cron.schedule('0 7 * * *', () => {
     const today = new Date().toDateString();
 
     if (sentDates.has(today)) {
