@@ -65,15 +65,21 @@ async function fetchSearchResults() {
   try {
     const response = await axios.get('https://tikwm.com/api/feed/search', {
       params: { keywords: SEARCH_QUERY, count: 20 }
-
     });
-    const results = response.data.data || [];
+
+    const results = response.data?.data;
+    if (!Array.isArray(results)) {
+      console.error('❌ TikTok API error or bad format:', response.data);
+      return [];
+    }
+
     return results.map(item => item.share_url);
   } catch (err) {
     console.error('❌ Error fetching TikTok search:', err.message);
     return [];
   }
 }
+
 
 // Pick one new video that hasn't been sent before
 async function getUniqueTikTok() {
