@@ -20,13 +20,9 @@ const SEARCH_QUERY = 'unexpected edits zack d film';
 const SENT_LOG_FILE = './sent_tiktoks.json';
 
 const FRIEND_IDS = [
-  '686652284696002560', // abdallah
-  '203048947705446400', // kossay
-  '837464580887281696', // ali
-  '436559024788340746', // moez
-  '543488162219950080', // ania
+
   '295190404842782721',// you
-  '479422376703033356'  //yousef
+
 ];
 
 client.once('ready', () => {
@@ -34,7 +30,7 @@ client.once('ready', () => {
 
   const sentDates = new Set();
 
-  cron.schedule('37 8 * * *', () => {
+  cron.schedule('55 8 * * *', () => {
     const today = new Date().toDateString();
 
     if (sentDates.has(today)) {
